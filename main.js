@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d')
 
 const images = {
 bg:
-    'https://img.freepik.com/vector-gratis/arboles-linea-calle-urbana_1262-16625.jpg?size=626&ext=jpg',
+    './images/fondoCalle.png',
   rappi:
     'https://abacolatam.com/dist/landing/images/rappi.svg',
   logo:
@@ -13,6 +13,7 @@ bg:
 let interval;
 let frames = 0;
 const obstacles = [];
+const users = [];
 
 
 class Board {
@@ -34,40 +35,63 @@ class Board {
 
 class Rappi {
   constructor() {
-    this.x = 30;
-    this.y = 150;
-    this.width = 60;
-    this.height = 110;
+    this.x = 0;
+    this.y = 0;
+    this.width = 70;
+    this.height = 70;
     this.img = new Image();
     this.img.src = images.rappi;
     };
 
   draw() {
-    if (this.y > canvas.height - this.height) {
+    if (this.y > canvas.height - this.height ) { 
       this.y = canvas.height - this.height
     } else {
-    
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
-  }
+    if (this.y < !this.y + 136) {
+       this.y = !this.y + 136 
+      } else {
+          ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        };
+    };
+  
   fly() {
     this.y -= 100;
   }
   moveRight() {
-    this.x += 32
+    this.x += 42
   }
   moveLeft() {
-    this.x -= 32
+    this.x -= 42
   }
   moveUp() {
-    this.y -= 32
-    this.width = this.width - 15;
-    this.height = this.height -15;
+    this.y -= 42;
+    
+    if (this.y < !this.y + 136 ) { 
+      this.width = this.width - 0;
+      this.height = this.height - 0;
+      this.x += 0;
+    } else {
+      this.width = this.width - 3;
+      this.height = this.height - 3;
+      this.x += 10;
+    }
+   
   }
   moveDown() {
-    this.y += 32
-    this.width = this.width + 15;
-    this.height = this.height + 15;
+    this.y += 42
+    
+    if (this.y >= canvas.height - this.height ) { 
+      this.width = this.width + 0;
+      this.height = this.height + 0;
+      this.x -= 0;
+    } else {
+      this.width = this.width + 3;
+      this.height = this.height + 3;
+      this.x -= 10;
+    }
+    
   }
   isTouching(obstacle) {
     return (
@@ -83,18 +107,34 @@ class Obstacle {
   constructor(y) {
     this.x = canvas.width + 50;
     this.y = y;
-    this.height = 120;
-    this.width = 200;
+    this.height = 70;
+    this.width = 90;
     this.img = new Image();
     this.img.src = "./images/uberuber.png";
+    
+
   }
     draw() {
-        this.x = this.x -10
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-   }}
+
+        this.x = this.x - frames /300  
+        if (this.y >= canvas.height - this.height) { 
+          this.y = canvas.height - this.height - 12
+        } else {
+          ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        }
+          if (this.y < !this.y + 210) {
+             this.y = !this.y + 210 
+
+            } else {
+                ctx.drawImage(this.img, this.x, this.y , this.width, this.height);
+              };
+              
+          };
+   }
 
 function generateObstacles(){
-  if (frames % 400 === 0) {
+
+  if (frames % 100 === 0) {
     const randomPosition = Math.floor(Math.random() * canvas.height) + 50
     const obs = new Obstacle(randomPosition)
     obstacles.push(obs)
@@ -110,21 +150,47 @@ const rappi = new Rappi();
 
 
 
+class Users {
+  constructor(x) {
+    this.x = x;
+    this.y = 147;
+    this.height = 60;
+    this.width = 30;
+    this.img = new Image();
+    this.img.src = "./images/man.png";
+  }
+    draw() { 
+      this.x--;
+      ctx.drawImage(this.img, this.x, this.y , this.width, this.height);         
+   }};
+
+  function generateUsers (){
+    if (frames % 400 === 0) {
+      const randomPosition = Math.floor(Math.random() * canvas.width) 
+      const us = new Users(randomPosition)
+      users.push(us)
+    }
+  };
+  
+  function drawUsers() {
+    users.forEach(us => us.draw())
+  }
+
 
 
 window.onload = function() {
   document.getElementById("start-button").onclick = function() {
     start()
-    startGame();
-  };
+    // startGame();
+  }};
 
-  function startGame() {
-    board.draw();
-    Rappi.draw();
+  // function startGame() {
+  //   board.draw();
+  //   Rappi.draw();
 
-    interval = setInterval(updateCanvas, 1000 / 60)
-  }
-};
+//     interval = setInterval(updateCanvas, 1000 / 60)
+//   }
+// };
 
 
 function clearCanvas() {
@@ -136,11 +202,12 @@ function update() {
   clearCanvas();
   board.draw();
   rappi.draw();
-  checkCollition();
   generateObstacles();
   drawObstacles();
+  generateUsers ();
+  drawUsers();
+checkCollition();
 }
-
 
 function score (){
   score 
@@ -151,7 +218,7 @@ function checkCollition() {
     if (rappi.isTouching(obs)) {
       gameOver();
     }
-    if (rappi.y <= 0 || rappi.y >= canvas.height - rappi.height) {
+    if (rappi.y <= 0 || rappi.y > canvas.height - rappi.height) {
       gameOver();
     }
   });
@@ -163,21 +230,21 @@ function gameOver() {
 
   clearInterval(interval);
 }
-
-
-
-
 function start() {
   if (interval) return;
   interval = setInterval(update, 1000 / 60);
 }
 
-function restart() {
-  interval = false;
-  rappi.x = 30;
-  rappi.y = 70;
-  start();
-}
+// function restart() {
+//   interval = false;
+//   rappi.x = 30;
+//   rappi.y = 70;
+//   start();
+// }
+
+
+
+
 
 document.onkeydown = (e) => {
   switch (e.keyCode) {
