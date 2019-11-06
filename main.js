@@ -14,6 +14,9 @@ let interval;
 let frames = 0;
 const obstacles = [];
 const users = [];
+const foods = []
+let score = 0;
+let hp = 3
 
 
 class Board {
@@ -37,8 +40,10 @@ class Rappi {
   constructor() {
     this.x = 0;
     this.y = 0;
-    this.width = 70;
-    this.height = 70;
+    this.vx = 0
+    this.vy = 0
+    this.width = 65;
+    this.height = 65;
     this.img = new Image();
     this.img.src = images.rappi;
     };
@@ -57,7 +62,7 @@ class Rappi {
     };
   
   fly() {
-    this.y -= 100;
+    this.y -= 80;
   }
   moveRight() {
     this.x += 42
@@ -75,7 +80,7 @@ class Rappi {
     } else {
       this.width = this.width - 3;
       this.height = this.height - 3;
-      this.x += 10;
+      this.x += 15;
     }
    
   }
@@ -89,7 +94,7 @@ class Rappi {
     } else {
       this.width = this.width + 3;
       this.height = this.height + 3;
-      this.x -= 10;
+      this.x -= 15;
     }
     
   }
@@ -165,7 +170,7 @@ class Users {
    }};
 
   function generateUsers (){
-    if (frames % 400 === 0) {
+    if (frames % 480 === 0) {
       const randomPosition = Math.floor(Math.random() * canvas.width) 
       const us = new Users(randomPosition)
       users.push(us)
@@ -177,22 +182,53 @@ class Users {
   }
 
 
+  class Food {
+    constructor(y) {
+      this.x = canvas.width ;
+      this.y = y;
+      this.height = 35;
+      this.width = 25;
+      this.img = new Image();
+      this.img.src = "./images/groceries1.png";
+      
+  
+    }
+      draw() {
+          this.x--;
+          if (this.y >= canvas.height - this.height) { 
+            this.y = canvas.height - this.height - 12
+          } else {
+            ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+          }
+            if (this.y < !this.y + 210) {
+               this.y = !this.y + 210 
+  
+              } else {
+                  ctx.drawImage(this.img, this.x, this.y , this.width, this.height);
+                };
+                
+            };
+     }
+  
+  function generateFood(){
+  
+    if (frames % 700 === 0) {
+      const randomPosition = Math.floor(Math.random() * canvas.height) + 50
+      const fo = new Food(randomPosition)
+      foods.push(fo)
+    }
+  };
+  
+  function drawFood() {
+    foods.forEach(fo => fo.draw())
+  }
+  
 
 window.onload = function() {
   document.getElementById("start-button").onclick = function() {
     start()
-    // startGame();
-  }};
-
-  // function startGame() {
-  //   board.draw();
-  //   Rappi.draw();
-
-//     interval = setInterval(updateCanvas, 1000 / 60)
-//   }
-// };
-
-
+  }
+};
 function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -206,29 +242,60 @@ function update() {
   drawObstacles();
   generateUsers ();
   drawUsers();
-checkCollition();
+  generateFood();
+  drawFood();
+  userscore ();
+  foodscore();
+  drawScore();
+  checkCollition();
+  gameOver()
 }
 
-function score (){
-  score 
+
+function drawHp(){
+
 }
+
+function drawScore(){
+  ctx.font = '30px Arial'
+  ctx.fillText(`Score: ${score}`, 100, 45)
+}
+
+function userscore(){
+  users.forEach((us, i) => {
+    if (rappi.isTouching(us)) { setTimeout (
+      users.splice(i, 1),10000)  
+    }
+  })
+}
+
+function foodscore (){
+  foods.forEach((fo, i) => {
+  if (rappi.isTouching(fo)) {
+    foods.splice(i, 1)
+    score += 1
+  }
+})
+}
+
 
 function checkCollition() {
-  obstacles.forEach((obs) => {
+  setInterval
+  obstacles.forEach((obs, i) => {
     if (rappi.isTouching(obs)) {
-      gameOver();
+      obstacles.splice(i, 1)
+      hp -=1
     }
-    if (rappi.y <= 0 || rappi.y > canvas.height - rappi.height) {
-      gameOver();
-    }
-  });
-}
+  })
+  };
 
 function gameOver() {
-  ctx.font = '70px Courier';
-  ctx.fillText('Game over', canvas.width / 2, canvas.height / 2);
-
-  clearInterval(interval);
+  if (hp <= 0) {
+    clearInterval(interval)
+    ctx.font = '30px Arial'
+    ctx.fillStyle = 'white'
+    ctx.fillText('Game Over', canvas.width / 2 - 30, canvas.height / 2 - 10)
+  }
 }
 function start() {
   if (interval) return;
@@ -275,3 +342,7 @@ case 40:
 
 
 
+document.onkeyup = e => {
+  Rappi.x = 0
+Rappi.y = 0
+}
