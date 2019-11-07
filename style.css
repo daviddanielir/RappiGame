@@ -18,7 +18,7 @@ body {
   }
 
   #rappilogo{
-    margin-top: 60px;
+    margin-top: 80px;
     display: block;
   }
   
@@ -28,7 +28,7 @@ body {
   }
   
   body button {
-    display: block;
+    display: inline;
     font-size: 20px;
     background-color: black;
     color: #fff;
@@ -36,8 +36,18 @@ body {
     border: 0;
     box-shadow: 0;
     border-radius: 5px;
-    margin-bottom: 20px;
-    margin-top: -100px;
-    margin-left: 550px;
+    
+    margin-left: 100px;
   }
   
+
+
+  #rappiamigo{
+    position: absolute;
+    text-align: center;
+    align-items: center;
+   width: 60%;
+   height: 60%;
+   margin-left: 100px;
+   transition: linear;
+  }

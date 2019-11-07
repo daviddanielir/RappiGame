@@ -1,5 +1,5 @@
-const canvas = document.querySelector('canvas');
-const ctx = canvas.getContext('2d')
+const canvas2 = document.querySelector('canvas');
+const ctx2 = canvas.getContext('2d')
 
 
 const images = {
@@ -14,7 +14,7 @@ bg:
 let interval;
 let frames = 0;
 const obstacles = [];
-const users = [];
+const users =   [];
 const foods = [];
 let score = 0;
 let hp = 4
@@ -24,16 +24,16 @@ class Board {
   constructor() {
     this.x = 0;
     this.y = 0;
-    this.width = canvas.width;
-    this.height = canvas.height;
+    this.width = canvas2.width;
+    this.height = canvas2.height;
     this.img = new Image();
     this.img.src = images.bg;
   };
   draw() {
     this.x--;
-    if (this.x < -canvas.width) this.x = 0;
+    if (this.x < -canvas2.width) this.x = 0;
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    ctx.drawImage(this.img, this.x + canvas.width, this.y, this.width, this.height);
+    ctx.drawImage(this.img, this.x + canvas2.width, this.y, this.width, this.height);
   }
 }
 
@@ -51,8 +51,8 @@ class Rappi {
     };
 
   draw() {
-    if (this.y > canvas.height - this.height ) { 
-      this.y = canvas.height - this.height
+    if (this.y > canvas2.height - this.height ) { 
+      this.y = canvas2.height - this.height
     } else {
       ctx.drawImage(this.img,(this.animate * 896) / 3, 0,  896 / 3,279,this.x,this.y,this.width,this.height
             );
@@ -91,7 +91,7 @@ class Rappi {
   moveDown() {
     this.y += 42
     
-    if (this.y >= canvas.height - this.height ) { 
+    if (this.y >= canvas2.height - this.height ) { 
       this.width = this.width + 0;
       this.height = this.height + 0;
       this.x -= 0;
@@ -129,7 +129,7 @@ function RappiAnimation() {
 
 class Obstacle {
   constructor(y) {
-    this.x = canvas.width + 50;
+    this.x = canvas2.width + 50;
     this.y = y;
     this.height = 80;
     this.width = 110;
@@ -147,8 +147,8 @@ class Obstacle {
           }
           this.animate++
           }
-        if (this.y >= canvas.height - this.height) { 
-          this.y = canvas.height - this.height - 12
+        if (this.y >= canvas2.height - this.height) { 
+          this.y = canvas2.height - this.height - 12
         } else {
           ctx.drawImage(this.img,(this.animate * 603) / 3, 0,  602 / 3,  121,this.x,this.y,this.width,this.height);
         }
@@ -165,7 +165,7 @@ class Obstacle {
 function generateObstacles(){
 
   if (frames % 100 === 0) {
-    const randomPosition = Math.floor(Math.random() * canvas.height) + 50
+    const randomPosition = Math.floor(Math.random() * canvas2.height) + 50
     const obs = new Obstacle(randomPosition)
     obstacles.push(obs)
   }
@@ -181,8 +181,8 @@ class Users {
     this.x = x;
     this.y = 147;
     this.animate = 0;
-    this.height = 70;
-    this.width = 40;
+    this.height = 60;
+    this.width = 30;
     this.img = new Image();
     this.img.src = "./images/mansprite.png";
     this.img.onload = () => {
@@ -205,7 +205,7 @@ class Users {
   
   function generateUsers (){
     if (frames % 80 === 0) {
-      const randomPosition = Math.floor(Math.random() * canvas.width) 
+      const randomPosition = Math.floor(Math.random() * canvas2.width) 
       const us = new Users(randomPosition)
       users.push(us)
     }
@@ -219,7 +219,7 @@ class Users {
   
   class Food {
     constructor(y) {
-      this.x = canvas.width ;
+      this.x = canvas2.width ;
       this.y = y;
       this.height = 45;
       this.width = 35;
@@ -239,8 +239,8 @@ class Users {
             }
             this.animate++
             }
-          if (this.y >= canvas.height - this.height) { 
-            this.y = canvas.height - this.height - 12
+          if (this.y >= canvas2.height - this.height) { 
+            this.y = canvas2.height - this.height - 12
           } else {
             ctx.drawImage(this.img,(this.animate * 640) / 4, 0,  640 / 4,  172,this.x,this.y,this.width,this.height
             );
@@ -271,12 +271,12 @@ class Users {
  
 
 window.onload = function() {
-  document.getElementById("start-button").onclick = function() {
+  document.getElementById("Player2").onclick = function() {
     start()
   }
 };
 function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas2.width, canvas2.height);
 }
 
 class Healt {
@@ -350,7 +350,7 @@ function gameOver() {
     clearInterval(interval)
     ctx.font = '30px Arial'
     ctx.fillStyle = 'white'
-    ctx.fillText('Game Over', canvas.width / 2 - 30, canvas.height / 2 - 10)
+    ctx.fillText('Game Over', canvas2.width / 2 - 30, canvas2.height / 2 - 10)
     clearCanvas();
     console.log(score)
   }
@@ -360,14 +360,6 @@ function start() {
   if (interval) return;
   interval = setInterval(update, 1000 / 60);
 }
-
-// function restart() {
-//   interval = false;
-//   rappi.x = 30;
-//   rappi.y = 70;
-//   start();
-// }
-
 
 
 
