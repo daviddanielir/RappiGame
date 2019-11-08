@@ -1,5 +1,7 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d')
+const gamesong = document.querySelector('#game')
+
 
 
 const images = {
@@ -17,7 +19,7 @@ const obstacles = [];
 const users = [];
 const foods = [];
 let score = 0;
-let hp = 4
+let hp = 6
 
 
 class Board {
@@ -44,29 +46,38 @@ class Rappi {
     this.vx = 0
     this.vy = 0
     this.animate = 0;
-    this.width = 75;
-    this.height = 75;
+    this.width = 88;
+    this.height = 82;
     this.img = new Image();
-    this.img.src = "./images/rappisprite.png";
+    this.img.src = "./images/Rappi.png";
     };
 
   draw() {
     if (this.y > canvas.height - this.height ) { 
       this.y = canvas.height - this.height
     } else {
-      ctx.drawImage(this.img,(this.animate * 896) / 3, 0,  896 / 3,279,this.x,this.y,this.width,this.height
+      ctx.drawImage(this.img,(this.animate * 800) / 3, 0,  800 / 3, 315,this.x,this.y,this.width,this.height
             );
     }
-    if (this.y < !this.y + 134) {
-       this.y = !this.y + 134 
+    if (this.y < !this.y + 125) {
+       this.y = !this.y + 125 
       } else {
-        ctx.drawImage(this.img,(this.animate * 896) / 3, 0,  896 / 3,279,this.x,this.y,this.width,this.height
+        ctx.drawImage(this.img,(this.animate * 800) / 3, 0,  800 / 3, 315,this.x,this.y,this.width,this.height
         );
         };
+
+    if (this.y > canvas.width ) { 
+          this.y = canvas.width 
+      } else {
+        ctx.drawImage(this.img,(this.animate * 800) / 3, 0,  800 / 3, 315,this.x,this.y,this.width,this.height
+                );
+        }
     };
+    
   
   fly() {
-    this.y -= 80;
+    this.x-=80
+
   }
   moveRight() {
     this.x += 42
@@ -77,7 +88,7 @@ class Rappi {
   moveUp() {
     this.y -= 42;
     
-    if (this.y < !this.y + 134 ) { 
+    if (this.y < !this.y + 125 ) { 
       this.width = this.width - 0;
       this.height = this.height - 0;
       this.x += 0;
@@ -112,12 +123,10 @@ class Rappi {
   }
 }
 
-
 function RappiAnimation() {
   const users = new Users();
-  if (frames % 23 === 0) {
+  if (frames % 14 === 0) {
     if (rappi.animate === 2) {
-        console.log()
         rappi.animate = 0
     } else {
       rappi.animate++
@@ -181,8 +190,8 @@ class Users {
     this.x = x;
     this.y = 147;
     this.animate = 0;
-    this.height = 70;
-    this.width = 40;
+    this.height = 60;
+    this.width = 30;
     this.img = new Image();
     this.img.src = "./images/mansprite.png";
     this.img.onload = () => {
@@ -191,20 +200,20 @@ class Users {
   }
     draw() { 
       this.x--;
-      if (frames % 14 === 0) {
+      if (frames % 9 === 0) {
         if (this.animate === 3) {
-           this.animate = 0
+           this.animate = 0;
         }
         this.animate++
         }
       ctx.drawImage(
-        this.img,(this.animate * 254) / 4,0,63.5,126,this.x,this.y,this.width,this.height
+        this.img,(this.animate * 254) / 4,0, 254 / 4,126,this.x,this.y,this.width,this.height
       )       
    }
   }
   
   function generateUsers (){
-    if (frames % 80 === 0) {
+    if (frames % 400 === 0) {
       const randomPosition = Math.floor(Math.random() * canvas.width) 
       const us = new Users(randomPosition)
       users.push(us)
@@ -233,7 +242,7 @@ class Users {
       draw() {
           this.x--;
 
-          if (frames % 14 === 0) {
+          if (frames % 100 === 0) {
             if (this.animate === 3) {
                this.animate = 0
             }
@@ -300,9 +309,9 @@ class Healt {
 
 class Boardscore {
   constructor(){
-      this.x = 10;
+      this.x = 7;
       this.y = 10;
-      this.width =  80;
+      this.width =  100;
       this.height = 80;
       this.image = new Image();
       this.image.src = './images/scoreboard.png';
@@ -311,18 +320,39 @@ class Boardscore {
       ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }
+
+class Credito {
+  constructor(){
+      this.x = 55;
+      this.y = 20;
+      this.width =  697;
+      this.height = 437;
+      this.image = new Image();
+      this.image.src = './images/rappi100.jpg';
+  }
+  draw(){
+      ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    }
+}
+
+
+
+
 function drawScore(){
-  ctx.font = '30px Arial'
+  ctx.font = '40px Arial'
   ctx.fillStyle = 'red';
-  ctx.fillText(` ${score}`, 54, 70)
+  ctx.fillText(` ${score}`, 49, 74)
 }
 
 function userScore(){
   users.forEach((us, i) => {
     if (rappi.isTouching(us)) { setTimeout (
       users.splice(i, 1),10000)  
+      gracias.volume = 0.1575
+      gracias.play()
     }
   })
+
 }
 
 function foodscore (){
@@ -330,9 +360,13 @@ function foodscore (){
   if (rappi.isTouching(fo)) {
     foods.splice(i, 1)
     score += 1
+    comida.volume = 0.1875
+      comida.play()
   }
 })
 }
+
+
 
 
 function checkCollition() {
@@ -341,6 +375,8 @@ function checkCollition() {
     if (rappi.isTouching(obs)) {
       obstacles.splice(i, 1)
       hp -=1
+      aguas.volume = 0.1575
+      aguas.play()
     }
   })
   };
@@ -348,25 +384,41 @@ function checkCollition() {
 function gameOver() {
   if (hp <= 0) {
     clearInterval(interval)
-    ctx.font = '30px Arial'
+    ctx.font = '90px Arial'
     ctx.fillStyle = 'white'
-    ctx.fillText('Game Over', canvas.width / 2 - 30, canvas.height / 2 - 10)
-    clearCanvas();
-    console.log(score)
+    ctx.fillText('Game Over', canvas.width / 2 - 300, canvas.height / 2 )
+    game.pause()
+    perdiste.volume = 0.3975
+    perdiste.play()    
   }
 }
+
+function winner () {
+
+  if (score > 12){
+    game.pause()
+    aguas.pause()
+    comida.pause()
+    gracias.pause()
+    perdiste.pause()
+    clearCanvas();
+    credito.draw();
+    ganaste.volume = 0.3975
+    ganaste.play()   
+  }
+}
+
+
 function start() {
+  game.volume = 0.0675
+  game.play()
   goFullScreen(document.querySelector('canvas'))
   if (interval) return;
   interval = setInterval(update, 1000 / 60);
 }
 
-// function restart() {
-//   interval = false;
-//   rappi.x = 30;
-//   rappi.y = 70;
-//   start();
-// }
+
+
 
 
 
@@ -424,6 +476,7 @@ function update() {
   drawScore();
   checkCollition();
   gameOver()
+  winner ()
 }
 
 
@@ -431,6 +484,7 @@ const board = new Board();
 const rappi = new Rappi();
 const healt = new Healt();
 const boardscore = new Boardscore();
+const credito = new Credito ();
 
 
 
