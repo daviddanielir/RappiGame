@@ -393,7 +393,7 @@ function gameOver() {
 
 function winner () {
 
-  if (score > 12){
+  if (score > 5){
     game.pause()
     aguas.pause()
     comida.pause()
