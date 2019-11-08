@@ -384,7 +384,7 @@ function gameOver() {
     clearInterval(interval)
     ctx.font = '90px Arial'
     ctx.fillStyle = 'white'
-    ctx.fillText('Game Over', canvas.width / 2 - 300, canvas.height / 2 )
+    ctx.fillText('Game Over', canvas.width / 2 - 300, canvas.height / 2 );
     game.pause()
     perdiste.volume = 0.4075
     perdiste.play()    
@@ -393,7 +393,7 @@ function gameOver() {
 
 function winner () {
 
-  if (score > 9){
+  if (score > 12){
     game.pause()
     aguas.pause()
     comida.pause()
