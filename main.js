@@ -401,8 +401,8 @@ function winner () {
     perdiste.pause()
     clearCanvas();
     credito.draw();
-    ganaste.volume = 0.3975
-    ganaste.play()   
+    ganaste.volume = 0.3975;
+    ganaste.play();   
   }
 }
 
