@@ -358,7 +358,7 @@ function foodscore (){
   if (rappi.isTouching(fo)) {
     foods.splice(i, 1)
     score += 1
-    comida.volume = 0.1875
+    comida.volume = 0.2175
       comida.play()
   }
 })
