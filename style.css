@@ -22,6 +22,7 @@ body {
   #rappilogo{
     margin-top: 80px;
     display: block;
+    margin-left: 25px;
   }
   
   #game-board {
@@ -50,7 +51,7 @@ body {
     align-items: center;
    width: 60%;
    height: 60%;
-   margin-left: -160px;
+   margin-left: -140px;
 
   }
 
@@ -63,8 +64,30 @@ body {
    width: 27%;
    height: 45%;
    margin-left: 450px;
-   margin-top: 60px;
-
-
-
+   margin-top: 30px;
   }
+
+  #applestore{
+position: absolute;
+width: 176px;
+height: 55px;
+margin-left: -155px;
+margin-top: 30px;
+  }
+
+
+  #googlestore{
+    position: absolute;
+    width: 200px;
+    height: 81px;
+    margin-left: -166px;
+    margin-top: 90px;
+      }
+
+          #pide{
+            position: absolute;
+            width: 200px;
+            height: 86px;
+            margin-left: -166px;
+            margin-top: -65px;
+              }
