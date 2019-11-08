@@ -2,8 +2,6 @@ const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d')
 const gamesong = document.querySelector('#game')
 
-
-
 const images = {
 bg:
     './images/fondoCalle.png',
@@ -388,7 +386,7 @@ function gameOver() {
     ctx.fillStyle = 'white'
     ctx.fillText('Game Over', canvas.width / 2 - 300, canvas.height / 2 )
     game.pause()
-    perdiste.volume = 0.3975
+    perdiste.volume = 0.4075
     perdiste.play()    
   }
 }
